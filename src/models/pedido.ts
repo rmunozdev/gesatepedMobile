@@ -1,0 +1,21 @@
+export interface Pedido {
+  numeroVerificacion: String,
+  fechaRecojoTienda: String,
+  fechaReprogramacion: String,
+  fechaCancelacion: String,
+  fechaDevolucionPed: String,
+  codigoMotivo: String,
+  distritoDespacho: String,
+  tiendaDevolucion: String,
+  detalle: String,
+  codigoPedido: String,
+  cliente: String,
+  numeroReserva: String,
+  fechaSolicitud: String,
+  fechaVentaPedido: String,
+  fechaDespacho: String,
+  fechaRetiro: String,
+  direccionDespacho: String,
+  tienda: String,
+  listaDetallePedido: String
+}
