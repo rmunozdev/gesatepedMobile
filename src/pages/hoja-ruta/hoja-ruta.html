@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>HojaRuta</ion-title>
+    <img src="/assets/imgs/sodimac-logo.png" />
   </ion-navbar>
 
 </ion-header>
@@ -16,7 +16,26 @@
 <ion-content padding>
   <div id="info" *ngIf="hojaRuta && hojaRuta.codigo">
     <div>Hoja de ruta: {{hojaRuta.codigo}}</div>
+    <div>Placa de unidad: {{hojaRuta.unidadChofer.unidad.numeroPlaca}}</div>
+    <div>SOAT: {{hojaRuta.unidadChofer.unidad.numeroSoat}}</div>
     <div>Chofer: {{chofer.nombres}} {{chofer.apellidos}}</div>
+    <div>Fecha de despacho: {{hojaRuta.fechaDespacho}}</div>
+
+    <ion-list *ngFor="let detalle of hojaRuta.detalles">
+      <button ion-item (click)="verPedido(detalle)">
+        <div>
+          <div>Orden de entrega: {{detalle.ordenDespachoPedido}}</div>
+          <div>Pedido: {{detalle.pedido.codigoPedido}}</div>
+          <div>Cliente: {{detalle.destinatario}}</div>
+          <div>Dirección: {{detalle.domicilio}}</div>
+          <div>Rango Horario: {{detalle.horario}}</div>
+          <div>Estado: {{detalle.estado}}</div>
+        </div>
+
+      </button>
+
+    </ion-list>
+
   </div>
   <div id="problema" *ngIf="hojaRuta && !hojaRuta.codigo">
     <div>Sr.{{chofer.nombres}} {{chofer.apellidos}}: Usted no cuenta con hoja de ruta asignada hoy</div>

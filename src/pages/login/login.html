@@ -5,12 +5,10 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Login</ion-title>
+    <img src="/assets/imgs/sodimac-logo.png" />
   </ion-navbar>
-
-</ion-header>
+ </ion-header>
 
 
 <ion-content padding>
@@ -19,12 +17,18 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-label>Brevete de chofer</ion-label>
-          <ion-select placeholder="Seleccionar" [(ngModel)]="chofer">
-            <ion-option *ngFor="let choferItem of choferes" [value]="choferItem">
-              {{choferItem.numeroBrevete}}
-            </ion-option>
-          </ion-select>
+          <ion-item>
+            <ion-label>Brevete de chofer</ion-label>
+            <ion-select placeholder="Elegir Brevete"
+                        [interface]="'popover'"
+                        [selectOptions]="selectOptions"
+                        [(ngModel)]="chofer" okText="Aceptar" cancelText="Cancelar">
+              <ion-option *ngFor="let choferItem of choferes" [value]="choferItem">
+                {{choferItem.numeroBrevete}}
+              </ion-option>
+            </ion-select>
+
+          </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>

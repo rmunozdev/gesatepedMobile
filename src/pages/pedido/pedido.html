@@ -1,0 +1,29 @@
+<!--
+  Generated template for the PedidoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <img src="/assets/imgs/sodimac-logo.png" />
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div>{{pedido.codigoPedido}}</div>
+  <hr>
+  <div>Cliente: {{destinatario}}</div>
+  <button ion-button (click)="iniciarDespacho()">Despachar</button>
+
+  <ion-list *ngFor="let detalle of detallesPedido">
+    <div>Codigo de producto: {{detalle.producto.codigo}}</div>
+    <div>Descripción: {{detalle.producto.nombre}} {{detalle.producto.marca}}</div>
+    <div>Cantidad: {{detalle.cantidadProducto}}</div>
+
+  </ion-list>
+  <button ion-button (click)="salir()">salir</button>
+</ion-content>

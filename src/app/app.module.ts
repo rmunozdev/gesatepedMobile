@@ -12,13 +12,22 @@ import { ChoferServiceProvider } from '../providers/chofer-service/chofer-servic
 import {HttpClientModule} from "@angular/common/http";
 import {HojaRutaPage} from "../pages/hoja-ruta/hoja-ruta";
 import { RutaServiceProvider } from '../providers/ruta-service/ruta-service';
+import {PedidoPage} from "../pages/pedido/pedido";
+import { PedidoServiceProvider } from '../providers/pedido-service/pedido-service';
+import {DespachoPage} from "../pages/despacho/despacho";
+import { DespachoServiceProvider } from '../providers/despacho-service/despacho-service';
+
+import { Camera } from '@ionic-native/camera';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    HojaRutaPage
+    HojaRutaPage,
+    PedidoPage,
+    DespachoPage
   ],
   imports: [
     BrowserModule,
@@ -30,7 +39,9 @@ import { RutaServiceProvider } from '../providers/ruta-service/ruta-service';
     MyApp,
     HomePage,
     LoginPage,
-    HojaRutaPage
+    HojaRutaPage,
+    PedidoPage,
+    DespachoPage
   ],
   providers: [
     StatusBar,
@@ -38,7 +49,12 @@ import { RutaServiceProvider } from '../providers/ruta-service/ruta-service';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     SecurityServiceProvider,
     ChoferServiceProvider,
-    RutaServiceProvider
+    RutaServiceProvider,
+    PedidoServiceProvider,
+    DespachoPage,
+    DespachoServiceProvider,
+    Camera,
+    Geolocation
   ]
 })
 export class AppModule {}

@@ -1,3 +1,6 @@
+import {Producto} from "./producto";
+import {Bodega} from "./bodega";
+
 export interface Pedido {
   numeroVerificacion: String,
   fechaRecojoTienda: String,
@@ -18,4 +21,14 @@ export interface Pedido {
   direccionDespacho: String,
   tienda: String,
   listaDetallePedido: String
+}
+
+export interface DetallePedido {
+  pedido: Pedido,
+  producto:  Producto,
+  cantidadProductoDefectuoso: number,
+  observacionProductoDefectuoso: String,
+  cantidadProductoNoUbicable: number,
+  bodega: Bodega,
+  cantidadProducto: number
 }

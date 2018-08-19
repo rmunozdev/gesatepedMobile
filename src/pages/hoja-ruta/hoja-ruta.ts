@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Chofer} from "../../models/chofer";
-import {HojaRuta} from "../../models/hoja-ruta";
+import {DetalleHojaRuta, HojaRuta} from "../../models/hoja-ruta";
 import {RutaServiceProvider} from "../../providers/ruta-service/ruta-service";
+import {PedidoPage} from "../pedido/pedido";
 
 /**
  * Generated class for the HojaRutaPage page.
@@ -29,6 +30,16 @@ export class HojaRutaPage {
       this.hojaRuta = data;
     });
     console.log("chofer",this.chofer);
+  }
+
+  public verPedido(detalle:DetalleHojaRuta) {
+    this.navCtrl.push(PedidoPage,
+      {
+        pedido : detalle.pedido,
+        bodega : this.hojaRuta.bodega,
+        codigoHojaRuta: this.hojaRuta.codigo,
+        destinatario: detalle.destinatario
+      });
   }
 
 

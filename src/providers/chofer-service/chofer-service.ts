@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Chofer} from "../../models/chofer";
 import {GesatepedConstants} from "../../constants";
@@ -18,7 +18,16 @@ export class ChoferServiceProvider {
   }
 
   public list(){
-    return this.http.get(GesatepedConstants.CHOFER_LIST_URL);
+    console.log("GESATEPED>>Begin connection to " + GesatepedConstants.CHOFER_LIST_URL + " >>");
+    const httpOptions = {
+      headers : new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
+        'Accept': 'application/json',
+        'content-type':'application/json'
+      })
+    };
+    return this.http.get(GesatepedConstants.CHOFER_LIST_URL,httpOptions);
   }
 
 }

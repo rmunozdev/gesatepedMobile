@@ -22,13 +22,24 @@ export class LoginPage {
   chofer : Chofer;
   choferes : Chofer[];
 
+  selectOptions = {
+    title: 'Pizza Toppings',
+    subTitle: 'Select your toppings',
+    mode: 'md'
+  };
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public choferService: ChoferServiceProvider) {
+    console.log("GESATEPED>>Begin connection");
     choferService.list().subscribe((data: Chofer[])=>{
+      console.log("GESATEPED>>connection result",data);
       console.log("data",data);
       this.choferes = data;
+    }, error => {
+      console.log("GESATEPED ERROR>>" + JSON.stringify(error));
     });
+
   }
 
   public login() {
