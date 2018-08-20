@@ -24,6 +24,7 @@ export class DespachoPage {
   motivos: Motivo[];
   detalleHojaRuta: DetalleHojaRuta;
   validacion : String;
+  imageFormat : String;
 
 
   constructor(public navCtrl: NavController,
@@ -42,10 +43,12 @@ export class DespachoPage {
   public registrarAtencion() {
     this.obtenerPosicion().then(()=>{
       this.despachoService.registrarAtencion(this.detalleHojaRuta).subscribe(data=>{
-        console.log("Success",data);
+        console.log("GESATEPED>>ATENCION REGISTRADA",data);
         if(!data) {
           this.validacion = "Número de Verificación Incorrecto";
         }
+      } ,error => {
+        console.log("GESATEPED>>FALLO REGISTRO ATENCION" + JSON.stringify(error));
       });
     });
   }
@@ -53,7 +56,10 @@ export class DespachoPage {
   public registrarIncumplimiento() {
     this.obtenerPosicion().then(()=>{
       this.despachoService.registrarIncumplimiento(this.detalleHojaRuta).subscribe(data=>{
+        console.log("GESATEPED>>INCUMPLIMIENTO REGISTRADO",data);
         console.log("Success",data);
+      }, error => {
+        console.log("GESATEPED>>FALLO REGISTRO INCUMPLIMIENTO" + JSON.stringify(error));
       });
     });
 
@@ -67,8 +73,8 @@ export class DespachoPage {
     }
 
     const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      quality: 50,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
     }
@@ -76,7 +82,8 @@ export class DespachoPage {
     this.camera.getPicture(options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.imageFormat = 'data:image/jpeg;base64,'
+      let base64Image =  imageData;
       this.detalleHojaRuta.fotoDespachoPedido = base64Image;
       console.log("GESATEPED>>SUCCESS:Image established");
     }, (err) => {
