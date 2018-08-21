@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {ConnectionServiceProvider} from "../connection-service/connection-service";
 
 /*
   Generated class for the SecurityServiceProvider provider.
@@ -10,7 +11,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class SecurityServiceProvider {
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,public connectionService: ConnectionServiceProvider) {
     console.log('Hello SecurityServiceProvider Provider');
   }
 

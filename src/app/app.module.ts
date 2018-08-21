@@ -19,6 +19,7 @@ import { DespachoServiceProvider } from '../providers/despacho-service/despacho-
 
 import { Camera } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
+import { ConnectionServiceProvider } from '../providers/connection-service/connection-service';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { Geolocation } from '@ionic-native/geolocation';
     DespachoPage,
     DespachoServiceProvider,
     Camera,
-    Geolocation
+    Geolocation,
+    ConnectionServiceProvider
   ]
 })
 export class AppModule {}

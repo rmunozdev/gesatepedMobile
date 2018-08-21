@@ -6,38 +6,35 @@
 -->
 <ion-header>
   <ion-navbar>
-    <img src="/assets/imgs/sodimac-logo.png" />
+    <img src="/assets/imgs/sodimac-logo.png" width="225" height="52" alt="sodimac-logo"/>
   </ion-navbar>
  </ion-header>
 
 
 <ion-content padding>
-  <div>Bienvenido</div>
-  <div>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label>Brevete de chofer</ion-label>
-            <ion-select placeholder="Elegir Brevete"
-                        [interface]="'popover'"
-                        [selectOptions]="selectOptions"
-                        [(ngModel)]="chofer" okText="Aceptar" cancelText="Cancelar">
-              <ion-option *ngFor="let choferItem of choferes" [value]="choferItem">
-                {{choferItem.numeroBrevete}}
-              </ion-option>
-            </ion-select>
-
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col width-50 >
-          <button ion-button (click)="login()">Iniciar atención de pedidos</button>
-        </ion-col>
-
-      </ion-row>
-    </ion-grid>
-
+  <div class="header">
+    Sistema de Atención de Pedidos
   </div>
+  <div class="session">
+    Inicio de sesión
+  </div>
+  <ion-item>
+    <ion-select placeholder="Seleccione Brevete"
+                [interface]="'popover'"
+                [selectOptions]="selectOptions"
+                [(ngModel)]="chofer" okText="Aceptar"
+                cancelText="Cancelar"
+                class="gesatepedSelect"
+    >
+      <ion-option *ngFor="let choferItem of choferes" [value]="choferItem">
+        {{choferItem.numeroBrevete}}
+      </ion-option>
+    </ion-select>
+
+  </ion-item>
+  <ion-item  >
+    <button ion-button block [disabled]="!chofer" (click)="login()">Continuar</button>
+  </ion-item>
+
+
 </ion-content>

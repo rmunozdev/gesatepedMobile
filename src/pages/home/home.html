@@ -1,18 +1,46 @@
 <ion-header>
   <ion-navbar>
-    <img src="/assets/imgs/sodimac-logo.png" />
+    <img src="/assets/imgs/sodimac-logo.png" width="225" height="52" alt="sodimac-logo" />
+
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  Firs image <br>
-  <img src="http://192.168.1.2:8080/GesatepedWS/images/snoopy.jpg">
+  <div class="header">
+    Sistema de Atención de Pedidos
+  </div>
+  <ion-card>
+    <ion-card-content *ngIf="!CONNECTED">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            Antes de iniciar es necesario configurar la conexión al servidor
+          </ion-col>
+        </ion-row>
+        <ion-row >
+          <ion-col>
+            <ion-item>
+              <button ion-button block outline (click)="config()">¡Conectar ya!</button>
+            </ion-item>
+          </ion-col>
+        </ion-row>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
-  <button ion-button (click)="login()">Iniciar</button>
+      </ion-grid>
+    </ion-card-content>
 
+    <ion-card-content *ngIf="AFTER_SETTINGS">
+      <ion-grid >
+        <ion-row *ngIf="CONNECTED">
+          <ion-col>
+            El sistema está listo para atender sus pedidos
+            <button ion-button block color="primary" (click)="login()">Iniciar atención</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
 
-</ion-content>
+  </ion-card>
+  <ion-item *ngIf="AFTER_SETTINGS">
+    <button ion-button item-end icon-start clear small [color]="CONNECTED?'secondary':'danger'">
+      <ion-icon name="wifi" ></ion-icon> {{CONNECTED?'CONECTADO':'NO CONECTADO'}}</button>
+  </ion-item>

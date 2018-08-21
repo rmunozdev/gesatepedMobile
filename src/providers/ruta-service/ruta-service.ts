@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {GesatepedConstants} from "../../constants";
+import {ConnectionServiceProvider} from "../connection-service/connection-service";
 
 /*
   Generated class for the RutaServiceProvider provider.
@@ -11,12 +12,14 @@ import {GesatepedConstants} from "../../constants";
 @Injectable()
 export class RutaServiceProvider {
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,public connectionService: ConnectionServiceProvider) {
     console.log('Hello RutaServiceProvider Provider');
   }
 
   public get(breveteChofer:String) {
-    return this.http.get(GesatepedConstants.PEDIDO_LIST_URL + breveteChofer);
+    return this.http.get(this.connectionService.getBaseURL() +
+      GesatepedConstants.PEDIDO_LIST_PATH +
+      breveteChofer);
   }
 
 }
