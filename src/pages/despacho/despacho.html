@@ -14,6 +14,8 @@
 
 
 <ion-content padding>
+  <div class="header">Despachando: {{detalleHojaRuta.pedido.codigoPedido}}</div>
+  <hr>
 
   <ion-grid>
     <ion-row>
@@ -24,6 +26,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
+        <h4>Seleccione el modo de atención: </h4>
         <ion-select placeholder="Seleccionar" [(ngModel)]="modo">
           <ion-option value="atencion">Atendido</ion-option>
           <ion-option value="incumplimiento">No Atendido</ion-option>
@@ -33,16 +36,11 @@
 
     <ion-row *ngIf="modo == 'atencion'">
       <ion-col>
+        <h4>Ingrese el número de verificación provisto por el cliente: </h4>
         <div>
           <ion-input type="text" placeholder="Número de Verificación"
                      (change) = "clearValidation()"
                      [(ngModel)] = "detalleHojaRuta.pedido.numeroVerificacion"></ion-input>
-          <div>
-            <button ion-button (click)="obtenerImagen()"><ion-icon name="camera"></ion-icon></button>
-          </div>
-          <div>
-            <img src="{{imageFormat}}{{detalleHojaRuta.fotoDespachoPedido}}">
-          </div>
         </div>
       </ion-col>
     </ion-row>
@@ -55,17 +53,33 @@
           </ion-option>
         </ion-select>
       </ion-col>
-
     </ion-row>
-    <ion-row *ngIf="modo == 'atencion'">
-      <ion-col width-50>
-        <button ion-button (click)="registrarAtencion()">Grabar</button>
+    <ion-row *ngIf="modo == 'atencion' || modo == 'incumplimiento'">
+      <ion-col>
+        <div text-center>
+          <button ion-button round icon-only (click)="obtenerImagen()"><ion-icon name="camera"></ion-icon></button>
+        </div>
+
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="detalleHojaRuta.fotoDespachoPedido">
+      <ion-col>
+        <ion-item>
+          <div>
+            <img src="{{imageFormat}}{{detalleHojaRuta.fotoDespachoPedido}}">
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="modo == 'atencion'" text-center>
+      <ion-col>
+        <button ion-button round (click)="registrarAtencion()">Grabar</button>
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="modo == 'incumplimiento'">
-      <ion-col width-50>
-        <button ion-button (click)="registrarIncumplimiento()">Grabar</button>
+    <ion-row *ngIf="modo == 'incumplimiento'" text-center>
+      <ion-col>
+        <button ion-button round (click)="registrarIncumplimiento()">Grabar</button>
       </ion-col>
     </ion-row>
   </ion-grid>

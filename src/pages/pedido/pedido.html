@@ -14,16 +14,24 @@
 
 
 <ion-content padding>
-  <div>{{pedido.codigoPedido}}</div>
+  <div class="header">{{pedido.codigoPedido}}</div>
   <hr>
-  <div>Cliente: {{destinatario}}</div>
-  <button ion-button (click)="iniciarDespacho()">Despachar</button>
-
+  <h2>Cliente: {{destinatario}}</h2>
+  <button ion-button block (click)="iniciarDespacho()">Despachar</button>
+  <br>
   <ion-list *ngFor="let detalle of detallesPedido">
-    <div>Codigo de producto: {{detalle.producto.codigo}}</div>
-    <div>Descripción: {{detalle.producto.nombre}} {{detalle.producto.marca}}</div>
-    <div>Cantidad: {{detalle.cantidadProducto}}</div>
+    <ion-item text-wrap>
+      <ion-avatar item-start>
+        <img src="/assets/imgs/business_package.png">
+      </ion-avatar>
+      <div class="list-detail">
+        <div>Codigo de producto: {{detalle.producto.codigo}}</div>
+        <div>Descripción: {{detalle.producto.nombre}} {{detalle.producto.marca}}</div>
+        <div>Cantidad: {{detalle.cantidadProducto}}</div>
+      </div>
+    </ion-item>
+
 
   </ion-list>
-  <button ion-button (click)="salir()">salir</button>
+  <button ion-button block (click)="salir()">salir</button>
 </ion-content>

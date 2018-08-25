@@ -15,16 +15,21 @@
 
 <ion-content padding>
   <div id="info" *ngIf="hojaRuta && hojaRuta.codigo">
-    <div>Hoja de ruta: {{hojaRuta.codigo}}</div>
-    <div>Placa de unidad: {{hojaRuta.unidadChofer.unidad.numeroPlaca}}</div>
-    <div>SOAT: {{hojaRuta.unidadChofer.unidad.numeroSoat}}</div>
-    <div>Chofer: {{chofer.nombres}} {{chofer.apellidos}}</div>
-    <div>Fecha de despacho: {{hojaRuta.fechaDespacho}}</div>
+    <div class="header">HOJA DE RUTA: {{hojaRuta.codigo}}</div>
+
+    <ion-card class="info-card">
+      <ion-card-content>
+        <div>Placa de unidad: {{hojaRuta.unidadChofer.unidad.numeroPlaca}}</div>
+        <div>SOAT: {{hojaRuta.unidadChofer.unidad.numeroSoat}}</div>
+        <div>Chofer: {{chofer.nombres}} {{chofer.apellidos}}</div>
+        <div>Fecha de despacho: {{getDateValue(hojaRuta.fechaDespacho)}}</div>
+      </ion-card-content>
+    </ion-card>
 
     <ion-list *ngFor="let detalle of hojaRuta.detalles">
-      <button ion-item (click)="verPedido(detalle)">
-        <div>
-          <div>Orden de entrega: {{detalle.ordenDespachoPedido}}</div>
+      <button ion-item (click)="verPedido(detalle)" text-wrap>
+        <div class="list-detail">
+          <div class="lead-detail">Orden de entrega: {{detalle.ordenDespachoPedido}}</div>
           <div>Pedido: {{detalle.pedido.codigoPedido}}</div>
           <div>Cliente: {{detalle.destinatario}}</div>
           <div>Dirección: {{detalle.domicilio}}</div>

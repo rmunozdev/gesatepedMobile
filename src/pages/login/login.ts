@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Chofer} from "../../models/chofer";
 import {SecurityServiceProvider} from "../../providers/security-service/security-service";
 import {ChoferServiceProvider} from "../../providers/chofer-service/chofer-service";
@@ -30,7 +30,8 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public choferService: ChoferServiceProvider) {
+              public choferService: ChoferServiceProvider,
+              private appCtrl: App) {
     console.log("GESATEPED>>Begin connection");
     choferService.list().subscribe((data: Chofer[])=>{
       console.log("GESATEPED>>connection result",data);
@@ -43,7 +44,7 @@ export class LoginPage {
   }
 
   public login() {
-    this.navCtrl.push(HojaRutaPage,{chofer: this.chofer});
+    this.appCtrl.getRootNav().setRoot(HojaRutaPage,{chofer: this.chofer});
   }
 
   ionViewDidLoad() {

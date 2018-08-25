@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {DespachoServiceProvider} from "../../providers/despacho-service/despacho-service";
 import {Motivo} from "../../models/motivo";
 import {DetalleHojaRuta} from "../../models/hoja-ruta";
 import { Camera,CameraOptions } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
+import {HojaRutaPage} from "../hoja-ruta/hoja-ruta";
 
 /**
  * Generated class for the DespachoPage page.
@@ -31,7 +32,8 @@ export class DespachoPage {
               public navParams: NavParams,
               public despachoService: DespachoServiceProvider,
               private camera: Camera,
-              private geolocation: Geolocation) {
+              private geolocation: Geolocation,
+              private alertController: AlertController) {
     this.detalleHojaRuta = <DetalleHojaRuta>{};
     this.detalleHojaRuta.codigoHojaRuta = navParams.get("codigoHojaRuta");
     this.detalleHojaRuta.pedido = navParams.get("pedido");
@@ -44,7 +46,9 @@ export class DespachoPage {
     this.obtenerPosicion().then(()=>{
       this.despachoService.registrarAtencion(this.detalleHojaRuta).subscribe(data=>{
         console.log("GESATEPED>>ATENCION REGISTRADA",data);
-        if(!data) {
+        if(data) {
+          this.showAlert();
+        } else {
           this.validacion = "Número de Verificación Incorrecto";
         }
       } ,error => {
@@ -58,6 +62,11 @@ export class DespachoPage {
       this.despachoService.registrarIncumplimiento(this.detalleHojaRuta).subscribe(data=>{
         console.log("GESATEPED>>INCUMPLIMIENTO REGISTRADO",data);
         console.log("Success",data);
+        if(data) {
+          this.showAlert();
+        } else {
+          this.validacion = "Ha ocurrido un error.";
+        }
       }, error => {
         console.log("GESATEPED>>FALLO REGISTRO INCUMPLIMIENTO" + JSON.stringify(error));
       });
@@ -108,5 +117,24 @@ export class DespachoPage {
 
   public clearValidation() {
     this.validacion = null;
+  }
+
+  public showAlert() {
+    let alert = this.alertController.create({
+      message: '¡Registro completo!',
+      buttons: [
+        {
+          text: 'Finalizar',
+          handler: data => {
+            let navTransition = alert.dismiss();
+            navTransition.then(()=>{
+              this.navCtrl.popToRoot();
+            });
+            return false;
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

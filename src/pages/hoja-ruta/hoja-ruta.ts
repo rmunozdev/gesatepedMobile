@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Chofer} from "../../models/chofer";
 import {DetalleHojaRuta, HojaRuta} from "../../models/hoja-ruta";
 import {RutaServiceProvider} from "../../providers/ruta-service/ruta-service";
 import {PedidoPage} from "../pedido/pedido";
+import * as moment from 'moment';
+
 
 /**
  * Generated class for the HojaRutaPage page.
@@ -24,7 +26,9 @@ export class HojaRutaPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public rutaService: RutaServiceProvider) {
+              public rutaService: RutaServiceProvider
+              ) {
+
     this.chofer = navParams.get("chofer");
     this.rutaService.get(this.chofer.numeroBrevete).subscribe((data:HojaRuta) => {
       this.hojaRuta = data;
@@ -45,6 +49,11 @@ export class HojaRutaPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HojaRutaPage');
+  }
+
+  public getDateValue(currentDate) {
+    var fecha = moment(new Date(currentDate).toUTCString());
+    return fecha.format("DD/MM/YYYY");
   }
 
 }
