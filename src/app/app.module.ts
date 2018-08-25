@@ -9,7 +9,7 @@ import { HomePage } from '../pages/home/home';
 import {LoginPage} from "../pages/login/login";
 import { SecurityServiceProvider } from '../providers/security-service/security-service';
 import { ChoferServiceProvider } from '../providers/chofer-service/chofer-service';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {HojaRutaPage} from "../pages/hoja-ruta/hoja-ruta";
 import { RutaServiceProvider } from '../providers/ruta-service/ruta-service';
 import {PedidoPage} from "../pages/pedido/pedido";
@@ -20,6 +20,7 @@ import { DespachoServiceProvider } from '../providers/despacho-service/despacho-
 import { Camera } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ConnectionServiceProvider } from '../providers/connection-service/connection-service';
+import {RutaInterceptor} from "../providers/ruta-service/RutaInterceptor";
 
 @NgModule({
   declarations: [

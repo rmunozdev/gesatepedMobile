@@ -13,7 +13,7 @@ import {ResponseContentType} from "@angular/http";
 export class ConnectionServiceProvider {
 
   private baseURL: string;
-  private static PROXIED_URL: string = "http://localhost:8100/proxied";
+  private static PROXIED_URL: string = "http://localhost:8100/GesatepedWS/proxied";
 
   constructor(public http: HttpClient) {
     console.log('Hello ConnectionServiceProvider Provider at '  + new Date());

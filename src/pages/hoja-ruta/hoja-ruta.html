@@ -26,19 +26,25 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-list *ngFor="let detalle of hojaRuta.detalles">
-      <button ion-item (click)="verPedido(detalle)" text-wrap>
-        <div class="list-detail">
-          <div class="lead-detail">Orden de entrega: {{detalle.ordenDespachoPedido}}</div>
-          <div>Pedido: {{detalle.pedido.codigoPedido}}</div>
-          <div>Cliente: {{detalle.destinatario}}</div>
-          <div>Dirección: {{detalle.domicilio}}</div>
-          <div>Rango Horario: {{detalle.horario}}</div>
-          <div>Estado: {{detalle.estado}}</div>
-        </div>
+    <ion-list>
+      <div *ngFor="let detalle of hojaRuta.detalles"
 
-      </button>
+      >
+        <button ion-item (click)="verPedido(detalle)" text-wrap
+                [disabled]="detalle.pedido.codigoPedido != firstPendiente"
 
+        >
+          <div class="list-detail" >
+            <div class="lead-detail">Orden de entrega: {{detalle.ordenDespachoPedido}}</div>
+            <div>Pedido: {{detalle.pedido.codigoPedido}}</div>
+            <div>Cliente: {{detalle.destinatario}}</div>
+            <div>Dirección: {{detalle.domicilio}}</div>
+            <div>Rango Horario: {{detalle.horario}}</div>
+            <div>Estado: {{detalle.estado}}</div>
+          </div>
+
+        </button>
+      </div>
     </ion-list>
 
   </div>

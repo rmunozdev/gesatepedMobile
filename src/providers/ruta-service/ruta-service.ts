@@ -16,10 +16,23 @@ export class RutaServiceProvider {
     console.log('Hello RutaServiceProvider Provider');
   }
 
+  public getSession() {
+    return localStorage.getItem('session');
+  }
+
+  public saveSessionKey(sessionCookie:string) {
+    localStorage.setItem('session',sessionCookie);
+  }
+
   public get(breveteChofer:String) {
     return this.http.get(this.connectionService.getBaseURL() +
       GesatepedConstants.PEDIDO_LIST_PATH +
       breveteChofer);
+  }
+
+  public isModified(codigoHojaRuta:String) {
+    return this.http.get(this.connectionService.getBaseURL() + "/despachos/isModified/" + codigoHojaRuta ,
+      {withCredentials: true});
   }
 
 }
