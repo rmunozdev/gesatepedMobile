@@ -46,3 +46,10 @@
   font-size: 13px;
   font-weight: 500;
 }
+
+// Permitir line wrap en elementos select
+.alert-md .alert-radio-label,
+.alert-ios .alert-radio-label
+{
+  white-space: normal !important;
+}

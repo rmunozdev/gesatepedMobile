@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {DespachoServiceProvider} from "../../providers/despacho-service/despacho-service";
 import {Motivo} from "../../models/motivo";
 import {DetalleHojaRuta} from "../../models/hoja-ruta";
@@ -33,7 +33,8 @@ export class DespachoPage {
               public despachoService: DespachoServiceProvider,
               private camera: Camera,
               private geolocation: Geolocation,
-              private alertController: AlertController) {
+              private alertController: AlertController,
+              public loadingCtrl: LoadingController) {
     this.detalleHojaRuta = <DetalleHojaRuta>{};
     this.detalleHojaRuta.codigoHojaRuta = navParams.get("codigoHojaRuta");
     this.detalleHojaRuta.pedido = navParams.get("pedido");
@@ -44,12 +45,16 @@ export class DespachoPage {
 
   public registrarAtencion() {
     this.obtenerPosicion().then(()=>{
+      let loading = this.presentLoadingDefault();
       this.despachoService.registrarAtencion(this.detalleHojaRuta).subscribe(data=>{
+        //loading.dismiss();
         console.log("GESATEPED>>ATENCION REGISTRADA",data);
-        if(data) {
+        if(data && data.codigo == 1) {
           this.showAlert();
-        } else {
-          this.validacion = "Número de Verificación Incorrecto";
+        } else if(data.mensaje) {
+          this.validacion = data.mensaje;
+        } else if(data.mensajes && data.mensajes.length > 0) {
+          this.validacion = data.mensajes[0];
         }
       } ,error => {
         console.log("GESATEPED>>FALLO REGISTRO ATENCION" + JSON.stringify(error));
@@ -59,13 +64,17 @@ export class DespachoPage {
 
   public registrarIncumplimiento() {
     this.obtenerPosicion().then(()=>{
+      let loading = this.presentLoadingDefault();
       this.despachoService.registrarIncumplimiento(this.detalleHojaRuta).subscribe(data=>{
+        //loading.dismiss();
         console.log("GESATEPED>>INCUMPLIMIENTO REGISTRADO",data);
         console.log("Success",data);
-        if(data) {
+        if(data && data.codigo == 1) {
           this.showAlert();
-        } else {
-          this.validacion = "Ha ocurrido un error.";
+        } else if(data.mensaje) {
+          this.validacion = data.mensaje;
+        } else if(data.mensajes && data.mensajes.length > 0) {
+          this.validacion = data.mensajes[0];
         }
       }, error => {
         console.log("GESATEPED>>FALLO REGISTRO INCUMPLIMIENTO" + JSON.stringify(error));
@@ -136,5 +145,23 @@ export class DespachoPage {
       ]
     });
     alert.present();
+  }
+
+  public salir() {
+    this.navCtrl.pop();
+  }
+
+  presentLoadingDefault() {
+    let loading = this.loadingCtrl.create({
+      content: 'Procesando...'
+    });
+
+    loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 5000);
+
+    return loading;
   }
 }

@@ -2,6 +2,7 @@ import {Bodega} from "./bodega";
 import {UnidadChofer} from "./unidad-chofer";
 import {Pedido} from "./pedido";
 import {Motivo} from "./motivo";
+import {VentanaHoraria} from "./ventana-horaria";
 
 export interface HojaRuta {
   codigo: String,
@@ -26,7 +27,7 @@ export interface DetalleHojaRuta {
   latGPSDespachoPedido?: number,
   longGPSDespachoPedido?: number,
   fotoDespachoPedido?: String,
-  ventana?: String,
+  ventana?: VentanaHoraria,
   motivo?: Motivo,
   destinatario?: String,
   domicilio?: String,

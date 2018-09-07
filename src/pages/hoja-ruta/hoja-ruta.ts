@@ -5,6 +5,7 @@ import {DetalleHojaRuta, HojaRuta} from "../../models/hoja-ruta";
 import {RutaServiceProvider} from "../../providers/ruta-service/ruta-service";
 import {PedidoPage} from "../pedido/pedido";
 import * as moment from 'moment';
+import {LoginPage} from "../login/login";
 
 
 /**
@@ -24,32 +25,47 @@ export class HojaRutaPage {
   chofer: Chofer;
   hojaRuta : HojaRuta;
   firstPendiente: String;
+  currentInterval: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public rutaService: RutaServiceProvider
               ) {
-
     this.chofer = navParams.get("chofer");
+  }
+
+  ionViewWillEnter() {
     this.rutaService.get(this.chofer.numeroBrevete).subscribe((data: HojaRuta) => {
       this.hojaRuta = data;
-      this.updateIndex();
-      setInterval(()=>{
-        this.rutaService.isModified('HRU0000004')
-          .subscribe(result =>{
-          if(result) {
-            console.log("Is modified");
-            this.rutaService.get(this.chofer.numeroBrevete).subscribe((nuevo : HojaRuta) =>{
-              this.hojaRuta = nuevo;
-              this.updateIndex();
+      if(this.hojaRuta.codigo == null) {
+        //Print message on view
+      } else {
+        this.updateIndex();
+        this.currentInterval = setInterval(()=>{
+          console.log("Fired function by Interval id: " + this.hojaRuta.codigo);
+          this.rutaService.isModified(this.hojaRuta.codigo)
+            .subscribe(result =>{
+              if(result) {
+                console.log("Is modified");
+                this.rutaService.get(this.chofer.numeroBrevete).subscribe((nuevo : HojaRuta) =>{
+                  this.hojaRuta = nuevo;
+                  this.updateIndex();
+                });
+              } else {
+                console.log("Is not modified");
+              }
             });
-          } else {
-            console.log("Is not modified");
-          }
-        });
-      },15000);
+        },15000);
+      }
     });
-    console.log("chofer",this.chofer);
+  }
+
+  ionViewWillLeave() {
+    if(this.currentInterval) {
+      clearInterval(this.currentInterval);
+      console.log("Interval clear");
+    }
+    console.log("You leave HojaRutaPage");
   }
 
   public verPedido(detalle:DetalleHojaRuta) {
@@ -63,13 +79,15 @@ export class HojaRutaPage {
   }
 
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad HojaRutaPage');
-  }
+
 
   public getDateValue(currentDate) {
     var fecha = moment(new Date(currentDate).toUTCString());
     return fecha.format("DD/MM/YYYY");
+  }
+
+  public returnToHome() {
+    this.navCtrl.push(LoginPage);
   }
 
   private updateIndex() {
@@ -83,5 +101,18 @@ export class HojaRutaPage {
     }
 
   }
+
+  public tConvert(time) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)?$/) || [time];
+
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[4] = +time[0] < 12 ? ' am' : ' pm'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
+  }
+
 
 }

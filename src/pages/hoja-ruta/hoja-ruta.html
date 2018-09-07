@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <img src="/assets/imgs/sodimac-logo.png" />
+    <img src="/assets/imgs/sodimac-logo.png" width="225" height="52" alt="sodimac-logo"/>
   </ion-navbar>
 
 </ion-header>
@@ -19,27 +19,27 @@
 
     <ion-card class="info-card">
       <ion-card-content>
-        <div>Placa de unidad: {{hojaRuta.unidadChofer.unidad.numeroPlaca}}</div>
+        <div>Placa de la Unidad: {{hojaRuta.unidadChofer.unidad.numeroPlaca}}</div>
         <div>SOAT: {{hojaRuta.unidadChofer.unidad.numeroSoat}}</div>
-        <div>Chofer: {{chofer.nombres}} {{chofer.apellidos}}</div>
-        <div>Fecha de despacho: {{getDateValue(hojaRuta.fechaDespacho)}}</div>
+        <div>Chofer: {{chofer.apellidos}}, {{chofer.nombres}} </div>
+        <div>Fecha de Despacho: {{getDateValue(hojaRuta.fechaDespacho)}}</div>
+        <div>Bodega: {{hojaRuta.bodega.nombre}}</div>
+        <div>Dirección de Bodega: {{hojaRuta.bodega.direccion}} {{hojaRuta.bodega.distrito.nombre}}</div>
       </ion-card-content>
     </ion-card>
 
     <ion-list>
       <div *ngFor="let detalle of hojaRuta.detalles"
-
       >
         <button ion-item (click)="verPedido(detalle)" text-wrap
-                [disabled]="detalle.pedido.codigoPedido != firstPendiente"
-
+                [disabled]="detalle.pedido.codigoPedido == firstPendiente"
         >
           <div class="list-detail" >
-            <div class="lead-detail">Orden de entrega: {{detalle.ordenDespachoPedido}}</div>
+            <div class="lead-detail">Orden de Despacho: {{detalle.ordenDespachoPedido}}</div>
             <div>Pedido: {{detalle.pedido.codigoPedido}}</div>
-            <div>Cliente: {{detalle.destinatario}}</div>
+            <div>Destinatario: {{detalle.destinatario}}</div>
             <div>Dirección: {{detalle.domicilio}}</div>
-            <div>Rango Horario: {{detalle.horario}}</div>
+            <div>Rango Horario: De {{tConvert(detalle.ventana.horaInicio)}} a {{tConvert(detalle.ventana.horaFin)}}</div>
             <div>Estado: {{detalle.estado}}</div>
           </div>
 
@@ -49,6 +49,9 @@
 
   </div>
   <div id="problema" *ngIf="hojaRuta && !hojaRuta.codigo">
-    <div>Sr.{{chofer.nombres}} {{chofer.apellidos}}: Usted no cuenta con hoja de ruta asignada hoy</div>
+    <div>Sr. {{chofer.apellidos}}, {{chofer.nombres}}; Usted no cuenta con hoja de ruta asignada hoy</div>
   </div>
+  <ion-fab bottom right>
+    <button ion-fab mini (click)="returnToHome()"><ion-icon name="home"></ion-icon></button>
+  </ion-fab>
 </ion-content>

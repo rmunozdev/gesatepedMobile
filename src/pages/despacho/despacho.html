@@ -38,17 +38,17 @@
       <ion-col>
         <h4>Ingrese el número de verificación provisto por el cliente: </h4>
         <div>
-          <ion-input type="text" placeholder="Número de Verificación"
+          <ion-input type="number" placeholder="Número de Verificación"
                      (change) = "clearValidation()"
                      [(ngModel)] = "detalleHojaRuta.pedido.numeroVerificacion"></ion-input>
         </div>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="modo == 'incumplimiento'">
-      <ion-col>
+      <ion-col class="item-select-customizado">
         <ion-label>Motivo</ion-label>
         <ion-select placeholder="Seleccionar" [(ngModel)]="detalleHojaRuta.motivo">
-          <ion-option *ngFor="let motivoItem of motivos" [value]="motivoItem">
+          <ion-option *ngFor="let motivoItem of motivos" [value]="motivoItem" >
             {{motivoItem.descripcion}}
           </ion-option>
         </ion-select>
@@ -73,13 +73,19 @@
     </ion-row>
     <ion-row *ngIf="modo == 'atencion'" text-center>
       <ion-col>
-        <button ion-button round (click)="registrarAtencion()">Grabar</button>
+        <button ion-button block round (click)="registrarAtencion()">Confirmar</button>
       </ion-col>
     </ion-row>
 
     <ion-row *ngIf="modo == 'incumplimiento'" text-center>
       <ion-col>
-        <button ion-button round (click)="registrarIncumplimiento()">Grabar</button>
+        <button ion-button block round (click)="registrarIncumplimiento()">Confirmar</button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row text-center>
+      <ion-col>
+        <button ion-button block round color="danger" (click)="salir()">salir</button>
       </ion-col>
     </ion-row>
   </ion-grid>
