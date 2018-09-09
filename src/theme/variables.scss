@@ -4,7 +4,7 @@
 // Font path is used to include ionicons,
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
-
+$img-path: "../assets/imgs";
 
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
@@ -40,7 +40,9 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   smoke:      rgba(144, 141, 141, 0.25),
-  leaf:       rgba(40, 238, 95, 0.17)
+  silver:      rgba(144, 141, 141, 1),
+  leaf:       rgba(40, 238, 95, 0.17),
+  violeta: #af7f85
 );
 
 

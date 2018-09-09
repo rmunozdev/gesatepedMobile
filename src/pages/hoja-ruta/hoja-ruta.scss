@@ -9,4 +9,60 @@ page-hoja-ruta {
     margin-top: 4px;
     margin-bottom: 4px;
   }
+  .order-button {
+    border-radius: 50px;
+    font-size: 20px !important;
+    margin-top: 1px !important;
+    margin-bottom: 1px !important;
+    margin-right: 1px !important;
+    height: 34px !important;
+    width: 34px;
+    position: relative;
+    left: -10px;
+  }
+  .subtitulo {
+    font-size: 15px;
+    font-weight: 500;
+    color: #af7f85;
+  }
+  .estado-label {
+    font-size: 12px;
+  }
+
+  .despachoblink {
+    -webkit-animation-name: blink;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blink;
+    -moz-animation-duration: 2s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blink;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  @-moz-keyframes blink {
+    0% { opacity: 1.0; background-color: color($colors, violeta); }
+    50% { opacity: 0.5; }
+    100% { opacity: 1.0; background-color: color($colors, violeta); }
+  }
+
+  @-webkit-keyframes blink {
+    0% { opacity: 1.0; background-color: color($colors, violeta);}
+    50% { opacity: 0.5; }
+    100% { opacity: 1.0; background-color: color($colors, violeta); }
+  }
+
+  @keyframes blink {
+    0% { opacity: 1.0; background-color: color($colors, violeta); }
+    50% { opacity: 0.5; }
+    100% { opacity: 1.0; background-color: color($colors, violeta); }
+  }
 }
+
+

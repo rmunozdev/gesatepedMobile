@@ -24,6 +24,7 @@ export class PedidoPage {
   destinatario: String;
   codigoHojaRuta: String;
   detallesPedido : DetallePedido[];
+  despachoActivo : boolean;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -32,6 +33,7 @@ export class PedidoPage {
     this.bodega = navParams.get("bodega");
     this.destinatario = navParams.get("destinatario");
     this.codigoHojaRuta = navParams.get("codigoHojaRuta");
+    this.despachoActivo = navParams.get("despachoActivo");
     this.pedidoService.obtenerDetalles(
       this.pedido.codigoPedido,
       this.bodega.codigo).subscribe((data:DetallePedido[])=>{

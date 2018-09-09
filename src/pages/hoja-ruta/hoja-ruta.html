@@ -7,17 +7,17 @@
 <ion-header>
 
   <ion-navbar>
-    <img src="/assets/imgs/sodimac-logo.png" width="225" height="52" alt="sodimac-logo"/>
+    <img src="/assets/imgs/sodimac-logo-transparent.png" width="215" height="50" alt="sodimac-logo"/>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding #rutas>
+  <div id="topmarker"></div>
   <div id="info" *ngIf="hojaRuta && hojaRuta.codigo">
     <div class="header">HOJA DE RUTA: {{hojaRuta.codigo}}</div>
-
-    <ion-card class="info-card">
+    <ion-card class="info-card ocean-background">
       <ion-card-content>
         <div>Placa de la Unidad: {{hojaRuta.unidadChofer.unidad.numeroPlaca}}</div>
         <div>SOAT: {{hojaRuta.unidadChofer.unidad.numeroSoat}}</div>
@@ -27,25 +27,44 @@
         <div>Dirección de Bodega: {{hojaRuta.bodega.direccion}} {{hojaRuta.bodega.distrito.nombre}}</div>
       </ion-card-content>
     </ion-card>
-
-    <ion-list>
-      <div *ngFor="let detalle of hojaRuta.detalles"
-      >
-        <button ion-item (click)="verPedido(detalle)" text-wrap
-                [disabled]="detalle.pedido.codigoPedido == firstPendiente"
-        >
-          <div class="list-detail" >
-            <div class="lead-detail">Orden de Despacho: {{detalle.ordenDespachoPedido}}</div>
-            <div>Pedido: {{detalle.pedido.codigoPedido}}</div>
-            <div>Destinatario: {{detalle.destinatario}}</div>
-            <div>Dirección: {{detalle.domicilio}}</div>
-            <div>Rango Horario: De {{tConvert(detalle.ventana.horaInicio)}} a {{tConvert(detalle.ventana.horaFin)}}</div>
-            <div>Estado: {{detalle.estado}}</div>
-          </div>
-
-        </button>
+    <div id="detallesMarker"></div>
+    <div *ngFor="let detalle of hojaRuta.detalles"
+    >
+      <div [id]="'desp'+ detalle.ordenDespachoPedido" class="list-detail" (click)="verPedido(detalle)" text-wrap>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <button ion-button color="violeta" item-start class="order-button" [class.despachoblink] = "firstPendiente == detalle.pedido.codigoPedido">
+                  {{detalle.ordenDespachoPedido}}
+                </button>
+                <div class="subtitulo">{{detalle.pedido.codigoPedido}}</div>
+                <ion-badge item-end [color]="getColor(detalle.estado)"
+                           class="estado-label">{{detalle.estado}}</ion-badge>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              Destinatario: {{detalle.destinatario}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              Dirección: {{detalle.domicilio}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              Rango Horario: De {{tConvert(detalle.ventana.horaInicio)}} a {{tConvert(detalle.ventana.horaFin)}}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
-    </ion-list>
+
+    </div>
+
+
 
   </div>
   <div id="problema" *ngIf="hojaRuta && !hojaRuta.codigo">

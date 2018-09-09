@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {DespachoServiceProvider} from "../../providers/despacho-service/despacho-service";
 import {Motivo} from "../../models/motivo";
@@ -6,6 +6,7 @@ import {DetalleHojaRuta} from "../../models/hoja-ruta";
 import { Camera,CameraOptions } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
 import {HojaRutaPage} from "../hoja-ruta/hoja-ruta";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 /**
  * Generated class for the DespachoPage page.
@@ -20,13 +21,17 @@ import {HojaRutaPage} from "../hoja-ruta/hoja-ruta";
   templateUrl: 'despacho.html',
 })
 export class DespachoPage {
-
   modo: String;
   motivos: Motivo[];
   detalleHojaRuta: DetalleHojaRuta;
-  validacion : String;
+  responseCode: number;
+  validacionAtencion : String;
+  validacionIncumplimiento : String;
   imageFormat : String;
-
+  numeroVerificacionControl : AbstractControl;
+  motivoControl: AbstractControl;
+  atencionForm : FormGroup;
+  incumplimientoForm: FormGroup;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -34,14 +39,31 @@ export class DespachoPage {
               private camera: Camera,
               private geolocation: Geolocation,
               private alertController: AlertController,
-              public loadingCtrl: LoadingController) {
+              public loadingCtrl: LoadingController,
+              private formBuilder: FormBuilder) {
     this.detalleHojaRuta = <DetalleHojaRuta>{};
     this.detalleHojaRuta.codigoHojaRuta = navParams.get("codigoHojaRuta");
     this.detalleHojaRuta.pedido = navParams.get("pedido");
     this.despachoService.listMotivos().subscribe((data:Motivo[])=>{
       this.motivos = data;
     });
+    this.modo = "atencion";
+
+    this.atencionForm = this.formBuilder.group({
+      numeroVerificacionControl : ['',
+        Validators.compose([Validators.required])]
+
+    });
+    this.numeroVerificacionControl = this.atencionForm.controls['numeroVerificacionControl'];
+
+
+    this.incumplimientoForm = this.formBuilder.group({
+      motivoControl : ['',
+        Validators.compose([Validators.required])]
+    });
+    this.motivoControl = this.incumplimientoForm.controls['motivoControl'];
   }
+
 
   public registrarAtencion() {
     this.obtenerPosicion().then(()=>{
@@ -52,9 +74,10 @@ export class DespachoPage {
         if(data && data.codigo == 1) {
           this.showAlert();
         } else if(data.mensaje) {
-          this.validacion = data.mensaje;
+          this.responseCode = data.codigo;
+          this.validacionAtencion = data.mensaje;
         } else if(data.mensajes && data.mensajes.length > 0) {
-          this.validacion = data.mensajes[0];
+          this.validacionAtencion = data.mensajes[0];
         }
       } ,error => {
         console.log("GESATEPED>>FALLO REGISTRO ATENCION" + JSON.stringify(error));
@@ -72,9 +95,9 @@ export class DespachoPage {
         if(data && data.codigo == 1) {
           this.showAlert();
         } else if(data.mensaje) {
-          this.validacion = data.mensaje;
+          this.validacionIncumplimiento = data.mensaje;
         } else if(data.mensajes && data.mensajes.length > 0) {
-          this.validacion = data.mensajes[0];
+          this.validacionIncumplimiento = data.mensajes[0];
         }
       }, error => {
         console.log("GESATEPED>>FALLO REGISTRO INCUMPLIMIENTO" + JSON.stringify(error));
@@ -125,7 +148,9 @@ export class DespachoPage {
   }
 
   public clearValidation() {
-    this.validacion = null;
+    this.validacionAtencion = null;
+    this.validacionIncumplimiento = null;
+    this.responseCode = 0;
   }
 
   public showAlert() {

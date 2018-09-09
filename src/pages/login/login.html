@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar>
-    <img src="/assets/imgs/sodimac-logo.png" width="225" height="52" alt="sodimac-logo"/>
+    <img src="/assets/imgs/sodimac-logo-transparent.png" width="215" height="50" alt="sodimac-logo"/>
   </ion-navbar>
  </ion-header>
 
@@ -16,10 +16,10 @@
     Sistema de Atención de Pedidos
   </div>
   <div class="session">
-    Inicio de sesión
+    INICIO DE SESIÓN
   </div>
-  <ion-item>
-    <ion-select placeholder="Seleccione Brevete"
+  <ion-item class="roundItem">
+    <ion-select placeholder="Seleccione Chofer"
                 [interface]="'popover'"
                 [selectOptions]="selectOptions"
                 [(ngModel)]="chofer" okText="Aceptar"
@@ -32,9 +32,7 @@
     </ion-select>
 
   </ion-item>
-  <ion-item  >
-    <button ion-button block [disabled]="!chofer" (click)="login()">Continuar</button>
-  </ion-item>
+  <button ion-button block round [disabled]="!chofer" (click)="login()">Continuar</button>
 
 
 </ion-content>

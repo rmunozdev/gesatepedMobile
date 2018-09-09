@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {App, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {ApplicationRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {App, Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Chofer} from "../../models/chofer";
 import {DetalleHojaRuta, HojaRuta} from "../../models/hoja-ruta";
 import {RutaServiceProvider} from "../../providers/ruta-service/ruta-service";
@@ -21,18 +21,26 @@ import {LoginPage} from "../login/login";
   templateUrl: 'hoja-ruta.html',
 })
 export class HojaRutaPage {
+  @ViewChild('rutas') rutas: Content;
 
   chofer: Chofer;
   hojaRuta : HojaRuta;
   firstPendiente: String;
   currentInterval: any;
 
+  offsetPositions: number[];
+  offsetTopMarker: number;
+  offsetDetallesMarker: number;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public rutaService: RutaServiceProvider
+              public rutaService: RutaServiceProvider,
+              private app: ApplicationRef
               ) {
     this.chofer = navParams.get("chofer");
+    this.offsetPositions = new Array<number>();
   }
+
 
   ionViewWillEnter() {
     this.rutaService.get(this.chofer.numeroBrevete).subscribe((data: HojaRuta) => {
@@ -41,15 +49,17 @@ export class HojaRutaPage {
         //Print message on view
       } else {
         this.updateIndex();
+        this.setScrollPosition();
         this.currentInterval = setInterval(()=>{
           console.log("Fired function by Interval id: " + this.hojaRuta.codigo);
           this.rutaService.isModified(this.hojaRuta.codigo)
             .subscribe(result =>{
               if(result) {
                 console.log("Is modified");
-                this.rutaService.get(this.chofer.numeroBrevete).subscribe((nuevo : HojaRuta) =>{
-                  this.hojaRuta = nuevo;
+                this.rutaService.get(this.chofer.numeroBrevete).subscribe((hojaRuta : HojaRuta) =>{
+                  this.hojaRuta = hojaRuta;
                   this.updateIndex();
+                  this.setScrollPosition();
                 });
               } else {
                 console.log("Is not modified");
@@ -74,7 +84,8 @@ export class HojaRutaPage {
         pedido : detalle.pedido,
         bodega : this.hojaRuta.bodega,
         codigoHojaRuta: this.hojaRuta.codigo,
-        destinatario: detalle.destinatario
+        destinatario: detalle.destinatario,
+        despachoActivo: (this.firstPendiente == detalle.pedido.codigoPedido)
       });
   }
 
@@ -99,8 +110,43 @@ export class HojaRutaPage {
       }
       index++;
     }
-
   }
+
+  private setScrollPosition() {
+    setTimeout(()=>{
+      if(this.offsetPositions.length == 0) {
+        this.initOffsetPositions();
+      }
+      let index = 0;
+
+      for(let i=0; i<this.hojaRuta.detalles.length; i++) {
+        if(this.hojaRuta.detalles[i].estado == 'Pendiente') {
+          console.log("Move to", this.offsetPositions[i] - this.offsetTopMarker);
+          this.rutas.scrollTo(0,this.offsetPositions[i] - this.offsetTopMarker);
+          this.app.tick();
+          return;
+        }
+        index++;
+      }
+    },500);
+  }
+
+  private initOffsetPositions() {
+    let topmarker = document.getElementById('topmarker');
+    let detallesMarker = document.getElementById('detallesMarker');
+    this.offsetTopMarker = topmarker?topmarker.getBoundingClientRect().top:0;
+    this.offsetDetallesMarker = detallesMarker?detallesMarker.getBoundingClientRect().top:0;
+    for(let i=0; i<this.hojaRuta.detalles.length; i++) {
+      let current = document.getElementById('desp' +
+        this.hojaRuta.detalles[i].ordenDespachoPedido);
+      let offsetCurrent = current?current.getBoundingClientRect().top:0;
+      this.offsetPositions.push(offsetCurrent);
+    }
+    console.log("offsetTopmarker",this.offsetTopMarker);
+    console.log("offsetDetallesMarker",this.offsetDetallesMarker);
+    console.log("Offset positions initialized", this.offsetPositions);
+  }
+
 
   public tConvert(time) {
     // Check correct time format and split into components
@@ -114,5 +160,12 @@ export class HojaRutaPage {
     return time.join (''); // return adjusted time or original string
   }
 
+  public getColor(estado) {
+    switch(estado) {
+      case "Pendiente": return "primary";
+      case "Atendido": return "secondary";
+      default: return "danger";
+    }
+  }
 
 }

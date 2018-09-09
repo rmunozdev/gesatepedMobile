@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <img src="/assets/imgs/sodimac-logo.png" />
+    <img src="/assets/imgs/sodimac-logo-transparent.png" width="215" height="50" alt="sodimac-logo"/>
   </ion-navbar>
 
 </ion-header>
@@ -17,7 +17,7 @@
   <div class="header">{{pedido.codigoPedido}}</div>
   <hr>
   <h2>Cliente: {{destinatario}}</h2>
-  <button ion-button block (click)="iniciarDespacho()">Despachar</button>
+  <button ion-button block round (click)="iniciarDespacho()" [disabled]="!despachoActivo">Despachar</button>
   <br>
   <ion-list *ngFor="let detalle of detallesPedido">
     <ion-item text-wrap>
