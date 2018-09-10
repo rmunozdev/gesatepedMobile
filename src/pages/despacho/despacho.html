@@ -50,26 +50,34 @@
         <ion-item class="invalid-message" *ngIf="motivoControl.hasError('required') && motivoControl.touched">
           Debe seleccionar el motivo.
         </ion-item>
+        <ion-item class="roundItem" [class.input-fail]="!motivoControl.valid && motivoControl.touched">
         <ion-select placeholder="Seleccionar"
-                    [class.input-fail]="!motivoControl.valid && motivoControl.touched"
+
                     formControlName = "motivoControl"
-                    [(ngModel)]="detalleHojaRuta.motivo" cancelText="Cancelar">
+                    [(ngModel)]="detalleHojaRuta.motivo"
+                    okText="Aceptar"
+                    cancelText="Cancelar"
+                    class="gesatepedSelect"
+        >
           <ion-option *ngFor="let motivoItem of motivos" [value]="motivoItem" >
             {{motivoItem.descripcion}}
           </ion-option>
         </ion-select>
+        </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="detalleHojaRuta.fotoDespachoPedido">
+    <ion-row *ngIf="detalleHojaRuta.fotoDespachoPedido" (click)="verImagen()" >
       <ion-col>
         <ion-item>
-          <ion-thumbnail item-start>
+          <ion-label color="primary">
+            Ver foto adjunta
+          </ion-label>
+          <ion-thumbnail item-left>
             <img src="{{imageFormat}}{{detalleHojaRuta.fotoDespachoPedido}}">
           </ion-thumbnail>
-          <p>Ver Foto Adjunta</p>
-
         </ion-item>
+
       </ion-col>
     </ion-row>
     <ion-row *ngIf="modo == 'atencion' || modo == 'incumplimiento'">

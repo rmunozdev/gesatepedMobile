@@ -1,5 +1,5 @@
 import {ApplicationRef, Component, ElementRef, ViewChild} from '@angular/core';
-import {App, Content, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, App, Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Chofer} from "../../models/chofer";
 import {DetalleHojaRuta, HojaRuta} from "../../models/hoja-ruta";
 import {RutaServiceProvider} from "../../providers/ruta-service/ruta-service";
@@ -35,7 +35,8 @@ export class HojaRutaPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public rutaService: RutaServiceProvider,
-              private app: ApplicationRef
+              private app: ApplicationRef,
+              private alertController: AlertController
               ) {
     this.chofer = navParams.get("chofer");
     this.offsetPositions = new Array<number>();
@@ -64,9 +65,16 @@ export class HojaRutaPage {
               } else {
                 console.log("Is not modified");
               }
+            }, error => {
+              clearInterval(this.currentInterval);
+              console.log("GESATEPED>>FALLO REGISTRO ATENCION" + JSON.stringify(error));
+              this.showFailAlert("Ocurrió un error inesperado al comunicarse con el servidor.");
             });
         },15000);
       }
+    }, error => {
+      console.log("GESATEPED>>FALLO REGISTRO ATENCION" + JSON.stringify(error));
+      this.showFailAlert("Ocurrió un error inesperado al comunicarse con el servidor.");
     });
   }
 
@@ -166,6 +174,22 @@ export class HojaRutaPage {
       case "Atendido": return "secondary";
       default: return "danger";
     }
+  }
+
+  public showFailAlert(message:string) {
+    let alert = this.alertController.create({
+      message: message,
+      buttons: [
+        {
+          text: 'Finalizar',
+          handler: data => {
+            let navTransition = alert.dismiss();
+            return false;
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

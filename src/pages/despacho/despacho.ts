@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {DespachoServiceProvider} from "../../providers/despacho-service/despacho-service";
 import {Motivo} from "../../models/motivo";
 import {DetalleHojaRuta} from "../../models/hoja-ruta";
@@ -7,6 +7,7 @@ import { Camera,CameraOptions } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
 import {HojaRutaPage} from "../hoja-ruta/hoja-ruta";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ImagenModal} from "./imagen";
 
 /**
  * Generated class for the DespachoPage page.
@@ -40,7 +41,8 @@ export class DespachoPage {
               private geolocation: Geolocation,
               private alertController: AlertController,
               public loadingCtrl: LoadingController,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private modalCtrl: ModalController,) {
     this.detalleHojaRuta = <DetalleHojaRuta>{};
     this.detalleHojaRuta.codigoHojaRuta = navParams.get("codigoHojaRuta");
     this.detalleHojaRuta.pedido = navParams.get("pedido");
@@ -69,7 +71,7 @@ export class DespachoPage {
     this.obtenerPosicion().then(()=>{
       let loading = this.presentLoadingDefault();
       this.despachoService.registrarAtencion(this.detalleHojaRuta).subscribe(data=>{
-        //loading.dismiss();
+        loading.dismiss();
         console.log("GESATEPED>>ATENCION REGISTRADA",data);
         if(data && data.codigo == 1) {
           this.showAlert();
@@ -80,7 +82,9 @@ export class DespachoPage {
           this.validacionAtencion = data.mensajes[0];
         }
       } ,error => {
+        loading.dismiss();
         console.log("GESATEPED>>FALLO REGISTRO ATENCION" + JSON.stringify(error));
+        this.showFailAlert("Ocurrió un error inesperado al comunicarse con el servidor.");
       });
     });
   }
@@ -89,7 +93,7 @@ export class DespachoPage {
     this.obtenerPosicion().then(()=>{
       let loading = this.presentLoadingDefault();
       this.despachoService.registrarIncumplimiento(this.detalleHojaRuta).subscribe(data=>{
-        //loading.dismiss();
+        loading.dismiss();
         console.log("GESATEPED>>INCUMPLIMIENTO REGISTRADO",data);
         console.log("Success",data);
         if(data && data.codigo == 1) {
@@ -100,7 +104,9 @@ export class DespachoPage {
           this.validacionIncumplimiento = data.mensajes[0];
         }
       }, error => {
+        loading.dismiss();
         console.log("GESATEPED>>FALLO REGISTRO INCUMPLIMIENTO" + JSON.stringify(error));
+        this.showFailAlert("Ocurrió un error inesperado al comunicarse con el servidor.");
       });
     });
 
@@ -130,6 +136,7 @@ export class DespachoPage {
     }, (err) => {
       // Handle error
       console.log("GESATEPED>>ERROR:" + JSON.stringify(err));
+      this.showFailAlert("Ocurrió un error al obtener imagen de cámara.");
     });
   }
 
@@ -141,6 +148,7 @@ export class DespachoPage {
         resolve();
       }).catch((error) => {
         console.log('Error getting location', error);
+        this.showFailAlert("Ocurrió un error al obtener posición de GPS.");
         reject();
       });
     }));
@@ -151,6 +159,11 @@ export class DespachoPage {
     this.validacionAtencion = null;
     this.validacionIncumplimiento = null;
     this.responseCode = 0;
+  }
+
+  public verImagen(){
+    let modal = this.modalCtrl.create(ImagenModal,{'imagen': this.imageFormat.toString() + this.detalleHojaRuta.fotoDespachoPedido.toString()});
+    modal.present();
   }
 
   public showAlert() {
@@ -172,21 +185,32 @@ export class DespachoPage {
     alert.present();
   }
 
+  public showFailAlert(message:string) {
+    let alert = this.alertController.create({
+      message: message,
+      buttons: [
+        {
+          text: 'Finalizar',
+          handler: data => {
+            let navTransition = alert.dismiss();
+            return false;
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   public salir() {
     this.navCtrl.pop();
   }
 
   presentLoadingDefault() {
     let loading = this.loadingCtrl.create({
-      content: 'Procesando...'
+      content: 'Procesando...',
+      spinner: 'bubbles'
     });
-
     loading.present();
-
-    setTimeout(() => {
-      loading.dismiss();
-    }, 5000);
-
     return loading;
   }
 }

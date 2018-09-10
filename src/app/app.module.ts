@@ -21,6 +21,7 @@ import { Camera } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
 import { ConnectionServiceProvider } from '../providers/connection-service/connection-service';
 import {RutaInterceptor} from "../providers/ruta-service/RutaInterceptor";
+import {ImagenModal} from "../pages/despacho/imagen";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {RutaInterceptor} from "../providers/ruta-service/RutaInterceptor";
     LoginPage,
     HojaRutaPage,
     PedidoPage,
-    DespachoPage
+    DespachoPage,
+    ImagenModal
   ],
   imports: [
     BrowserModule,
@@ -43,7 +45,8 @@ import {RutaInterceptor} from "../providers/ruta-service/RutaInterceptor";
     LoginPage,
     HojaRutaPage,
     PedidoPage,
-    DespachoPage
+    DespachoPage,
+    ImagenModal
   ],
   providers: [
     StatusBar,
