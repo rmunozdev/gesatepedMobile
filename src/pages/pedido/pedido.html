@@ -16,7 +16,7 @@
 <ion-content padding>
   <div class="header">{{pedido.codigoPedido}}</div>
   <hr>
-  <h2>Cliente: {{destinatario}}</h2>
+  <h2>Destinatario: {{destinatario}}</h2>
   <button ion-button block round (click)="iniciarDespacho()" [disabled]="!despachoActivo">Despachar</button>
   <br>
   <ion-list *ngFor="let detalle of detallesPedido">
@@ -25,7 +25,7 @@
         <img src="/assets/imgs/business_package.png">
       </ion-avatar>
       <div class="list-detail">
-        <div>Código de producto: {{detalle.producto.codigo}}</div>
+        <div>Código de Producto: {{detalle.producto.codigo}}</div>
         <div>Descripción: {{detalle.producto.nombre}} {{detalle.producto.marca}}</div>
         <div>Cantidad: {{detalle.cantidadProducto}}</div>
       </div>
